@@ -17,21 +17,25 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     private final AccountService accountService;
 
+    @AuditFilter()
     @PostMapping
     public ResponseObj<Account> createAccount(@Valid @RequestBody AccountDto accountDto) {
         return new ResponseObj<>(accountService.createAccount(accountDto.toAccount()));
     }
 
+    @AuditFilter()
     @GetMapping("/{id}")
     public ResponseObj<AccountDto> getAccountById(@PathVariable Long id) {
         return new ResponseObj<>(accountService.getAccountDetail(id).toAccountDto());
     }
 
+    @AuditFilter()
     @PutMapping("/{id}")
     public ResponseObj<Account> updateAccount(@PathVariable Long id, @Valid @RequestBody AccountDto account) {
         return new ResponseObj<>(accountService.updateAccount(id, account));
     }
 
+    @AuditFilter()
     @DeleteMapping("/{id}")
     public ResponseMessage deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
