@@ -1,5 +1,6 @@
 package com.example.springdemo.controllers;
 
+import com.example.springdemo.aop.AuditFilter;
 import com.example.springdemo.base.response.ResponseMessage;
 import com.example.springdemo.base.response.ResponseObj;
 import com.example.springdemo.base.response.ResponsePage;
@@ -37,6 +38,7 @@ public class AccountController {
         return new ResponseMessage();
     }
 
+    @AuditFilter()
     @GetMapping("/list")
     public ResponsePage<AccountDto> getAccountListPage(
             @RequestParam(required = false) String query,
