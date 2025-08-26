@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,19 +14,24 @@ import org.springframework.stereotype.Component;
 public class AppLog {
     @Around("@annotation(auditFilter) && execution(public * *(..))")
     public Object log(ProceedingJoinPoint joinPoint, AuditFilter auditFilter) throws Throwable {
-        var requestUUID = Generator.REQUEST_UUID;
+        String requestUUID = new Generator().REQUEST_UUID;
+        MDC.put("requestId", requestUUID);  // store UUID in MDC
+
         Logger log = getLog(joinPoint);
-        log.info("[{}] ==> Request to controller start ", requestUUID);
+        log.info("==> Request start");
+
         long startTime = System.currentTimeMillis();
-        Object result = joinPoint.proceed();
-        long endTime = System.currentTimeMillis();
+        try {
+            return joinPoint.proceed();
+        } finally {
+            long endTime = System.currentTimeMillis();
+            String className = joinPoint.getSignature().getDeclaringTypeName();
+            String methodName = joinPoint.getSignature().getName();
 
-        String className = joinPoint.getSignature().getDeclaringTypeName();
-        String methodName = joinPoint.getSignature().getName();
+            log.info("==> Execution Time Log: Class: {}, Method: {}, Time Taken: {} ms", className, methodName, (endTime - startTime));
 
-        log.info("[{}] ==> Execution Time Log: Class: {}, Method: {}, Time Taken: {} ms", requestUUID, className, methodName, (endTime - startTime));
-
-        return result;
+            MDC.remove("requestId"); // cleanup after request
+        }
     }
 
     private Logger getLog(ProceedingJoinPoint joinPoint) {

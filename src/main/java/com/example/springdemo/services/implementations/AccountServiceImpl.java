@@ -6,12 +6,13 @@ import com.example.springdemo.models.Account;
 import com.example.springdemo.repositories.AccountRepository;
 import com.example.springdemo.services.AccountService;
 import com.example.springdemo.utils.Generator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +23,18 @@ import java.util.Objects;
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
+    private final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     @Override
     public Account createAccount(Account req) {
+        logger.info("createAccount: {}", req);
         req.setAccountNumber(Generator.generateAccountNumber(accountRepository.findTop() + 1));
         return accountRepository.save(req);
     }
 
     @Override
     public Account updateAccount(Long id, AccountDto req) {
+        logger.info("updateAccount - id: {}, req: {}", id, req.toString());
         Account accountObj = getAccountDetail(id);
         Account updatedAccount = req.updateAccount(accountObj);
         return accountRepository.save(updatedAccount);
@@ -38,11 +42,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccountDetail(Long id) {
+        logger.info("getAccountDetail - id: {}", id);
         return accountRepository.findByIdAndStatusTrue(id).orElseThrow(() -> new CustomException(404, "Account not found"));
     }
 
     @Override
     public Page<Account> getAccountList(String query, int page, int size) {
+        logger.info("getAccountList - query: {}, page: {}, size: {}", query, page, size);
         return accountRepository.findAll((root, cq, cb) -> {
             ArrayList<Predicate> predicates = new ArrayList<>();
 
