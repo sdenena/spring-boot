@@ -23,12 +23,15 @@ import java.util.Date;
 public class BaseEntity {
     @Column(columnDefinition = "boolean default true")
     private Boolean status = true;
+
     @Column(name = "version")
     @Version
     private int version;
+
     @CreatedDate
     @Column(name = "created_date", updatable = false)
     private Date createdDate;
+
     @LastModifiedDate
     @Column(name = "updated_date")
     private Date updatedDate;
