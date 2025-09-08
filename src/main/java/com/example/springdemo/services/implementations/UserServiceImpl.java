@@ -4,7 +4,7 @@ import com.example.springdemo.base.response.ResponseMessage;
 import com.example.springdemo.base.response.ResponseObj;
 import com.example.springdemo.dto.LoginRequestDto;
 import com.example.springdemo.dto.LoginResponseDto;
-import com.example.springdemo.dto.UserDto;
+import com.example.springdemo.dto.UserUpdateDto;
 import com.example.springdemo.exceptions.ApiErrorException;
 import com.example.springdemo.models.Users;
 import com.example.springdemo.repositories.UserRepository;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseMessage updateUser(Long id, UserDto request) {
+    public ResponseMessage updateUser(Long id, UserUpdateDto request) {
         final var user = userRepository.findByIdAndStatusTrue(id).orElseThrow(() -> new ApiErrorException(404, "User not found"));
         var userUpdated = request.updateUser(user);
         userRepository.save(userUpdated);

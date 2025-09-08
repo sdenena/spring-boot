@@ -6,7 +6,6 @@ import com.example.springdemo.models.Account;
 import com.example.springdemo.repositories.AccountRepository;
 import com.example.springdemo.services.AccountService;
 import com.example.springdemo.utils.Generator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
