@@ -2,7 +2,6 @@ package com.example.springdemo.dto;
 
 import com.example.springdemo.models.Account;
 import com.example.springdemo.models.AccountType;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

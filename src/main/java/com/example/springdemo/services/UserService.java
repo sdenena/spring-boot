@@ -4,7 +4,7 @@ import com.example.springdemo.base.response.ResponseMessage;
 import com.example.springdemo.base.response.ResponseObj;
 import com.example.springdemo.dto.LoginRequestDto;
 import com.example.springdemo.dto.LoginResponseDto;
-import com.example.springdemo.dto.UserDto;
+import com.example.springdemo.dto.UserUpdateDto;
 import com.example.springdemo.models.Users;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -13,5 +13,5 @@ public interface UserService extends UserDetailsService {
 
     ResponseMessage registerUser(Users request);
 
-    ResponseMessage updateUser(Long id, UserDto request);
+    ResponseMessage updateUser(Long id, UserUpdateDto request);
 }
